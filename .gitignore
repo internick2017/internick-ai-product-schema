@@ -2,6 +2,9 @@
 /vendor/
 /node_modules/
 
+# local WordPress install (DDEV dev env; the plugin repo is the deliverable)
+/wp/
+
 # tests
 /tests/tmp/
 .phpunit.result.cache
