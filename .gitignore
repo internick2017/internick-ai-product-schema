@@ -1,0 +1,15 @@
+# dependencies
+/vendor/
+/node_modules/
+
+# tests
+/tests/tmp/
+.phpunit.result.cache
+
+# build / dist
+/dist/
+*.zip
+
+# misc
+.DS_Store
+*.log
