@@ -1,0 +1,17 @@
+# Shell scripts run inside the Linux DDEV container: force LF so CRLF from
+# Windows checkouts never breaks them.
+*.sh text eol=lf
+
+# Normalize the rest of the source to LF for consistent diffs.
+*.php text eol=lf
+*.js text eol=lf
+*.css text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.json text eol=lf
+*.pot text eol=lf
+
+# Binary assets: never touch.
+*.png binary
+*.jpg binary
+*.zip binary

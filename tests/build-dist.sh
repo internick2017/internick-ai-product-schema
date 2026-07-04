@@ -15,6 +15,7 @@ cp "$SRC/readme.txt" "$DEST/"
 cp "$SRC/README.md" "$DEST/"
 cp -r "$SRC/src" "$DEST/"
 cp -r "$SRC/languages" "$DEST/"
+cp -r "$SRC/assets" "$DEST/"
 
 echo "Dist built at $DEST"
 echo "--- files ---"

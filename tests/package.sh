@@ -11,7 +11,7 @@ rm -rf "$STAGE"
 mkdir -p "$DEST"
 
 cp "$SRC/shopgraph.php" "$SRC/readme.txt" "$DEST/"
-cp -r "$SRC/src" "$SRC/languages" "$DEST/"
+cp -r "$SRC/src" "$SRC/languages" "$SRC/assets" "$DEST/"
 
 mkdir -p "$SRC/dist"
 rm -f "$SRC/dist/shopgraph.zip"

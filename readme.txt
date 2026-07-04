@@ -50,6 +50,12 @@ AI attributes are stored on the product via the WooCommerce CRUD API (product me
 
 A simple Markdown convention (https://llmstxt.org/) that gives AI agents a concise, curated index of a site. ShopGraph serves one at `yourstore.com/llms.txt` listing your published products.
 
+== Screenshots ==
+
+1. The "AI Attributes" tab in the product editor: add product Q&A, compatible accessories, and substitute products.
+2. ShopGraph settings under WooCommerce &rarr; Settings: toggle Product schema, /llms.txt, and AI robots.txt, and choose the schema mode.
+3. The complete schema.org Product JSON-LD emitted on a product page, with AI attributes merged in (no duplicate node).
+
 == Changelog ==
 
 = 0.1.0 =

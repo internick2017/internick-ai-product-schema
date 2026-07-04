@@ -17,6 +17,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
+define( 'SHOPGRAPH_FILE', __FILE__ );
+define( 'SHOPGRAPH_VERSION', '0.1.0' );
+
 /**
  * Autoload ShopGraph classes (PSR-4). The plugin has no runtime Composer
  * dependencies, so a tiny SPL autoloader keeps the shipped plugin free of a
