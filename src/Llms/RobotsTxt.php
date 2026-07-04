@@ -12,6 +12,8 @@
 
 namespace ShopGraph\Llms;
 
+use ShopGraph\Settings\Options;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -60,6 +62,10 @@ class RobotsTxt {
 	 * @return string
 	 */
 	public function filter( string $output, bool $public = true ): string {
+		if ( ! Options::enabled( 'enable_robots' ) ) {
+			return $output;
+		}
+
 		// Respect a site that asks search engines not to index it.
 		if ( ! $public ) {
 			return $output;

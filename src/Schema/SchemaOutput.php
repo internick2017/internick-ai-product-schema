@@ -14,6 +14,7 @@
 namespace ShopGraph\Schema;
 
 use ShopGraph\Compat\SeoPlugins;
+use ShopGraph\Settings\Options;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -34,13 +35,16 @@ class SchemaOutput {
 	 * Register output hooks based on the active SEO plugin.
 	 */
 	public function register(): void {
-		$active = $this->seo->active();
+		if ( ! Options::enabled( 'enable_schema' ) ) {
+			return;
+		}
 
-		if ( null === $active ) {
+		if ( $this->should_output_standalone() ) {
 			add_action( 'wp_footer', array( $this, 'print_standalone' ) );
 			return;
 		}
 
+		$active = $this->seo->active();
 		if ( 'yoast' === $active ) {
 			add_filter( 'wpseo_schema_graph', array( $this, 'filter_yoast_graph' ), 30, 2 );
 			return;
@@ -54,9 +58,18 @@ class SchemaOutput {
 	/**
 	 * Whether ShopGraph is responsible for printing a standalone Product node.
 	 *
+	 * True when schema output is enabled and either the user forced standalone
+	 * mode or no supported SEO plugin is present.
+	 *
 	 * @return bool
 	 */
 	public function should_output_standalone(): bool {
+		if ( ! Options::enabled( 'enable_schema' ) ) {
+			return false;
+		}
+		if ( 'standalone' === Options::get( 'schema_mode', 'auto' ) ) {
+			return true;
+		}
 		return null === $this->seo->active();
 	}
 

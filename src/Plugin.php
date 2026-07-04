@@ -40,5 +40,16 @@ final class Plugin {
 		( new Schema\SchemaOutput( new Schema\ProductSchema(), new Compat\SeoPlugins() ) )->register();
 		( new Llms\LlmsTxt() )->register();
 		( new Llms\RobotsTxt() )->register();
+
+		// Register the WooCommerce settings tab lazily: the closure only loads
+		// Settings\SettingsPage (which extends WC_Settings_Page) when the filter
+		// runs in admin, by which point WC_Settings_Page is available.
+		add_filter(
+			'woocommerce_get_settings_pages',
+			static function ( array $pages ): array {
+				$pages[] = new Settings\SettingsPage();
+				return $pages;
+			}
+		);
 	}
 }

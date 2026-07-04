@@ -8,6 +8,8 @@
 
 namespace ShopGraph\Llms;
 
+use ShopGraph\Settings\Options;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -51,6 +53,10 @@ class LlmsTxt {
 	 */
 	public function maybe_serve(): void {
 		if ( ! get_query_var( self::QUERY_VAR ) ) {
+			return;
+		}
+
+		if ( ! Options::enabled( 'enable_llms' ) ) {
 			return;
 		}
 
