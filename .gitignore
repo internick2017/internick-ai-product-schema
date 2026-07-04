@@ -8,6 +8,7 @@
 # tests
 /tests/tmp/
 /tests/phpunit.out
+/tests/plugin-check.out
 .phpunit.result.cache
 
 # build / dist

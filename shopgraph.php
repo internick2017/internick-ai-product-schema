@@ -17,7 +17,24 @@
 
 defined( 'ABSPATH' ) || exit;
 
-require_once __DIR__ . '/vendor/autoload.php';
+/**
+ * Autoload ShopGraph classes (PSR-4). The plugin has no runtime Composer
+ * dependencies, so a tiny SPL autoloader keeps the shipped plugin free of a
+ * vendor/ directory.
+ */
+spl_autoload_register(
+	static function ( $class ) {
+		$prefix = 'ShopGraph\\';
+		$len    = strlen( $prefix );
+		if ( 0 !== strncmp( $prefix, $class, $len ) ) {
+			return;
+		}
+		$file = __DIR__ . '/src/' . str_replace( '\\', '/', substr( $class, $len ) ) . '.php';
+		if ( is_readable( $file ) ) {
+			require $file;
+		}
+	}
+);
 
 /**
  * Register the /llms.txt rewrite rule on activation, then flush so the route

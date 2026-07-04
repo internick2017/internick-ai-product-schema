@@ -171,11 +171,15 @@ class Fields {
 		}
 		$product->update_meta_data( self::META_QA, $qa );
 
-		$accessories = isset( $_POST['shopgraph_accessories'] ) ? (array) wp_unslash( $_POST['shopgraph_accessories'] ) : array();
-		$substitutes = isset( $_POST['shopgraph_substitutes'] ) ? (array) wp_unslash( $_POST['shopgraph_substitutes'] ) : array();
+		$accessories = isset( $_POST['shopgraph_accessories'] )
+			? array_map( 'absint', (array) wp_unslash( $_POST['shopgraph_accessories'] ) )
+			: array();
+		$substitutes = isset( $_POST['shopgraph_substitutes'] )
+			? array_map( 'absint', (array) wp_unslash( $_POST['shopgraph_substitutes'] ) )
+			: array();
 
-		$product->update_meta_data( self::META_ACCESSORIES, array_values( array_filter( array_map( 'absint', $accessories ) ) ) );
-		$product->update_meta_data( self::META_SUBSTITUTES, array_values( array_filter( array_map( 'absint', $substitutes ) ) ) );
+		$product->update_meta_data( self::META_ACCESSORIES, array_values( array_filter( $accessories ) ) );
+		$product->update_meta_data( self::META_SUBSTITUTES, array_values( array_filter( $substitutes ) ) );
 	}
 
 	/**

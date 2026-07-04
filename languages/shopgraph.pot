@@ -1,0 +1,136 @@
+# Copyright (C) 2026 Nick Granados
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: ShopGraph for WooCommerce 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/html\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-07-04T04:05:23+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.10.0\n"
+"X-Domain: shopgraph\n"
+
+#. Plugin Name of the plugin
+#: shopgraph.php
+msgid "ShopGraph for WooCommerce"
+msgstr ""
+
+#. Description of the plugin
+#: shopgraph.php
+msgid "Make your WooCommerce products discoverable and purchasable by AI shopping agents (complete Product schema, AI attributes, llms.txt)."
+msgstr ""
+
+#. Author of the plugin
+#: shopgraph.php
+msgid "Nick Granados"
+msgstr ""
+
+#. Author URI of the plugin
+#: shopgraph.php
+msgid "https://nickgranados.com"
+msgstr ""
+
+#: shopgraph.php:58
+msgid "ShopGraph requires WooCommerce to be installed and active."
+msgstr ""
+
+#: src/ProductFields/Fields.php:43
+msgid "AI Attributes"
+msgstr ""
+
+#: src/ProductFields/Fields.php:70
+msgid "Product Q&amp;A"
+msgstr ""
+
+#: src/ProductFields/Fields.php:71
+msgid "Common questions and answers about this product, surfaced to AI shopping agents."
+msgstr ""
+
+#: src/ProductFields/Fields.php:82
+msgid "Add Q&amp;A row"
+msgstr ""
+
+#: src/ProductFields/Fields.php:88
+msgid "Compatible accessories"
+msgstr ""
+
+#: src/ProductFields/Fields.php:89
+msgid "Products that work together with this one (accessories or spare parts)."
+msgstr ""
+
+#: src/ProductFields/Fields.php:94
+msgid "Substitute products"
+msgstr ""
+
+#: src/ProductFields/Fields.php:95
+msgid "Similar products an agent can suggest when this one is unavailable."
+msgstr ""
+
+#: src/ProductFields/Fields.php:112
+msgid "Question"
+msgstr ""
+
+#: src/ProductFields/Fields.php:114
+msgid "Answer"
+msgstr ""
+
+#: src/ProductFields/Fields.php:115
+msgid "Remove"
+msgstr ""
+
+#: src/ProductFields/Fields.php:130
+msgid "Search for a product&hellip;"
+msgstr ""
+
+#: src/Settings/SettingsPage.php:23
+#: src/Settings/SettingsPage.php:35
+msgid "ShopGraph"
+msgstr ""
+
+#: src/Settings/SettingsPage.php:37
+msgid "Make your WooCommerce products discoverable and purchasable by AI shopping agents."
+msgstr ""
+
+#: src/Settings/SettingsPage.php:41
+msgid "Product schema (JSON-LD)"
+msgstr ""
+
+#: src/Settings/SettingsPage.php:42
+msgid "Output complete schema.org Product structured data on product pages."
+msgstr ""
+
+#: src/Settings/SettingsPage.php:48
+msgid "Serve /llms.txt"
+msgstr ""
+
+#: src/Settings/SettingsPage.php:49
+msgid "Publish a Markdown product index at /llms.txt for AI crawlers."
+msgstr ""
+
+#: src/Settings/SettingsPage.php:55
+msgid "AI robots.txt directives"
+msgstr ""
+
+#: src/Settings/SettingsPage.php:56
+msgid "Welcome known AI shopping crawlers in robots.txt and reference /llms.txt."
+msgstr ""
+
+#: src/Settings/SettingsPage.php:62
+msgid "Schema mode"
+msgstr ""
+
+#: src/Settings/SettingsPage.php:63
+msgid "Auto coexists with Yoast / Rank Math (no duplicate). Standalone always prints ShopGraph's own Product node."
+msgstr ""
+
+#: src/Settings/SettingsPage.php:68
+msgid "Auto (coexist with SEO plugins)"
+msgstr ""
+
+#: src/Settings/SettingsPage.php:69
+msgid "Always standalone"
+msgstr ""
