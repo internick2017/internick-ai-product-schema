@@ -80,22 +80,37 @@ class ProductSchema {
 			);
 		}
 
+		return array_merge( $schema, $this->ai_attributes( $product ) );
+	}
+
+	/**
+	 * Build only the AI-attribute schema.org properties for a product.
+	 *
+	 * Exposed separately so the coexistence layer (SchemaOutput) can merge these
+	 * into a Product node emitted by an SEO plugin without duplicating the Product.
+	 *
+	 * @param \WC_Product $product Product.
+	 * @return array<string, mixed> Keys subjectOf / isRelatedTo / isSimilarTo, only when present.
+	 */
+	public function ai_attributes( \WC_Product $product ): array {
+		$attrs = array();
+
 		$faq = $this->faq_node( Fields::get_qa( $product ) );
 		if ( array() !== $faq ) {
-			$schema['subjectOf'] = $faq;
+			$attrs['subjectOf'] = $faq;
 		}
 
 		$related = $this->product_refs( Fields::get_accessories( $product ) );
 		if ( array() !== $related ) {
-			$schema['isRelatedTo'] = $related;
+			$attrs['isRelatedTo'] = $related;
 		}
 
 		$similar = $this->product_refs( Fields::get_substitutes( $product ) );
 		if ( array() !== $similar ) {
-			$schema['isSimilarTo'] = $similar;
+			$attrs['isSimilarTo'] = $similar;
 		}
 
-		return $schema;
+		return $attrs;
 	}
 
 	/**

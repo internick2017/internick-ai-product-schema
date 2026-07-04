@@ -37,5 +37,6 @@ final class Plugin {
 		$this->file = $file;
 
 		( new ProductFields\Fields() )->register();
+		( new Schema\SchemaOutput( new Schema\ProductSchema(), new Compat\SeoPlugins() ) )->register();
 	}
 }
