@@ -20,6 +20,19 @@ defined( 'ABSPATH' ) || exit;
 require_once __DIR__ . '/vendor/autoload.php';
 
 /**
+ * Register the /llms.txt rewrite rule on activation, then flush so the route
+ * resolves immediately. Flush again on deactivation to clean up.
+ */
+register_activation_hook(
+	__FILE__,
+	static function () {
+		( new \ShopGraph\Llms\LlmsTxt() )->add_rewrite_rule();
+		flush_rewrite_rules();
+	}
+);
+register_deactivation_hook( __FILE__, 'flush_rewrite_rules' );
+
+/**
  * Declare High-Performance Order Storage (HPOS) compatibility.
  * https://developer.woocommerce.com/docs/features/high-performance-order-storage/
  */
