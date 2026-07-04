@@ -39,5 +39,6 @@ final class Plugin {
 		( new ProductFields\Fields() )->register();
 		( new Schema\SchemaOutput( new Schema\ProductSchema(), new Compat\SeoPlugins() ) )->register();
 		( new Llms\LlmsTxt() )->register();
+		( new Llms\RobotsTxt() )->register();
 	}
 }
