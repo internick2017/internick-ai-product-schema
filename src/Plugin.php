@@ -35,5 +35,7 @@ final class Plugin {
 	 */
 	public function boot( string $file ): void {
 		$this->file = $file;
+
+		( new ProductFields\Fields() )->register();
 	}
 }
