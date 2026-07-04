@@ -40,37 +40,52 @@ class SchemaOutput {
 		}
 
 		if ( $this->should_output_standalone() ) {
+			// Forced standalone: suppress WooCommerce's own Product schema and
+			// print ShopGraph's complete node instead (no duplicate Product).
+			add_filter( 'woocommerce_structured_data_product', '__return_empty_array', 99 );
 			add_action( 'wp_footer', array( $this, 'print_standalone' ) );
 			return;
 		}
 
+		// Auto mode: enhance whatever Product node is emitted, never add a second.
+		// WooCommerce Core always emits Product structured data; merge into it.
+		add_filter( 'woocommerce_structured_data_product', array( $this, 'filter_wc_product' ), 20, 2 );
+
+		// When an SEO plugin takes over (and disables WC's schema), enhance its
+		// Product node too, so AI attributes are present whichever one is used.
 		$active = $this->seo->active();
 		if ( 'yoast' === $active ) {
 			add_filter( 'wpseo_schema_graph', array( $this, 'filter_yoast_graph' ), 30, 2 );
-			return;
-		}
-
-		if ( 'rankmath' === $active ) {
+		} elseif ( 'rankmath' === $active ) {
 			add_filter( 'rank_math/json_ld', array( $this, 'filter_rankmath_jsonld' ), 99, 2 );
 		}
 	}
 
 	/**
-	 * Whether ShopGraph is responsible for printing a standalone Product node.
+	 * Whether ShopGraph should print its own standalone Product node.
 	 *
-	 * True when schema output is enabled and either the user forced standalone
-	 * mode or no supported SEO plugin is present.
+	 * Only in forced "standalone" mode. In auto mode ShopGraph enhances the
+	 * existing Product node (WooCommerce Core, Yoast, or Rank Math) instead of
+	 * printing a second one.
 	 *
 	 * @return bool
 	 */
 	public function should_output_standalone(): bool {
-		if ( ! Options::enabled( 'enable_schema' ) ) {
-			return false;
+		return Options::enabled( 'enable_schema' ) && 'standalone' === Options::get( 'schema_mode', 'auto' );
+	}
+
+	/**
+	 * Merge AI attributes into WooCommerce Core's own Product structured data.
+	 *
+	 * @param mixed $markup  WooCommerce Product markup (array).
+	 * @param mixed $product The WC_Product being described.
+	 * @return mixed
+	 */
+	public function filter_wc_product( $markup, $product = null ) {
+		if ( ! is_array( $markup ) || ! $product instanceof \WC_Product ) {
+			return $markup;
 		}
-		if ( 'standalone' === Options::get( 'schema_mode', 'auto' ) ) {
-			return true;
-		}
-		return null === $this->seo->active();
+		return array_merge( $markup, $this->builder->ai_attributes( $product ) );
 	}
 
 	/**

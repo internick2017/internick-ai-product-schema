@@ -28,16 +28,18 @@ class SettingsTest extends WP_UnitTestCase {
 		$this->assertSame( 'auto', Options::get( 'schema_mode', 'auto' ) );
 	}
 
-	public function test_disabling_schema_stops_standalone_output(): void {
-		$output = $this->make_output();
-		$this->assertTrue( $output->should_output_standalone() );
-
-		update_option( 'shopgraph_settings', array( 'enable_schema' => 'no' ) );
-		$this->assertFalse( $output->should_output_standalone() );
+	public function test_auto_mode_is_not_standalone(): void {
+		// Default is auto: enhance the existing Product node, not standalone.
+		$this->assertFalse( $this->make_output()->should_output_standalone() );
 	}
 
 	public function test_standalone_mode_forces_standalone(): void {
 		update_option( 'shopgraph_settings', array( 'schema_mode' => 'standalone' ) );
 		$this->assertTrue( $this->make_output()->should_output_standalone() );
+	}
+
+	public function test_disabling_schema_overrides_standalone_mode(): void {
+		update_option( 'shopgraph_settings', array( 'schema_mode' => 'standalone', 'enable_schema' => 'no' ) );
+		$this->assertFalse( $this->make_output()->should_output_standalone() );
 	}
 }

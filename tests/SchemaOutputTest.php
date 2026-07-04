@@ -15,9 +15,35 @@ class SchemaOutputTest extends WP_UnitTestCase {
 		return new SchemaOutput( new ProductSchema(), new SeoPlugins() );
 	}
 
-	public function test_standalone_when_no_seo_plugin_active(): void {
+	public function test_auto_mode_does_not_output_standalone(): void {
+		// In auto mode ShopGraph enhances the existing Product node (WooCommerce
+		// Core / SEO plugin) instead of printing a second, standalone one.
 		$this->assertNull( ( new SeoPlugins() )->active() );
-		$this->assertTrue( $this->make_output()->should_output_standalone() );
+		$this->assertFalse( $this->make_output()->should_output_standalone() );
+	}
+
+	public function test_merges_ai_attributes_into_woocommerce_product_markup(): void {
+		$substitute = new WC_Product_Simple();
+		$substitute->set_name( 'Alternative' );
+		$substitute->save();
+
+		$product = new WC_Product_Simple();
+		$product->set_name( 'Main Product' );
+		$product->update_meta_data( '_shopgraph_qa', array( array( 'q' => 'Warranty?', 'a' => '2 years' ) ) );
+		$product->update_meta_data( '_shopgraph_substitutes', array( $substitute->get_id() ) );
+		$product->save();
+		$product = wc_get_product( $product->get_id() );
+
+		$markup = array(
+			'@type' => 'Product',
+			'name'  => 'Main Product',
+		);
+		$result = $this->make_output()->filter_wc_product( $markup, $product );
+
+		// AI attributes merged into WooCommerce's own node (no second node).
+		$this->assertSame( 'FAQPage', $result['subjectOf']['@type'] );
+		$this->assertSame( 'Alternative', $result['isSimilarTo'][0]['name'] );
+		$this->assertSame( 'Main Product', $result['name'] );
 	}
 
 	public function test_merges_ai_attributes_into_existing_product_node(): void {
