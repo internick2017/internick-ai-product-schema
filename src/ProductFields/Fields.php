@@ -79,6 +79,10 @@ class Fields {
 	public function render_panel(): void {
 		global $post;
 
+		if ( ! $post ) {
+			return;
+		}
+
 		$product = wc_get_product( $post->ID );
 		if ( ! $product instanceof \WC_Product ) {
 			return;
@@ -177,6 +181,10 @@ class Fields {
 			! isset( $_POST['shopgraph_fields_nonce'] )
 			|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['shopgraph_fields_nonce'] ) ), 'shopgraph_save_fields' )
 		) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_product', $product->get_id() ) ) {
 			return;
 		}
 

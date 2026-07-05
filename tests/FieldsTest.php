@@ -36,4 +36,76 @@ class FieldsTest extends WP_UnitTestCase {
 		$this->assertSame( array(), Fields::get_accessories( $reloaded ) );
 		$this->assertSame( array(), Fields::get_substitutes( $reloaded ) );
 	}
+
+	private function make_saved_product(): WC_Product {
+		$product = new WC_Product_Simple();
+		$product->set_name( 'Save Target' );
+		$product->save();
+		return $product;
+	}
+
+	private function post_payload(): array {
+		return array(
+			'shopgraph_fields_nonce' => wp_create_nonce( 'shopgraph_save_fields' ),
+			'shopgraph_q'            => array( 'Waterproof?', '', 'Warranty?' ),
+			'shopgraph_a'            => array( 'Yes.', 'Orphan answer', '2 years' ),
+			'shopgraph_accessories'  => array( '12', 'abc', '0', '34' ),
+			'shopgraph_substitutes'  => array( '56' ),
+		);
+	}
+
+	public function test_save_persists_sanitized_fields_from_post(): void {
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
+		$product = $this->make_saved_product();
+		$_POST   = $this->post_payload();
+
+		( new Fields() )->save( $product );
+		$product->save();
+		$reloaded = wc_get_product( $product->get_id() );
+
+		// Empty-question row is dropped (its orphan answer is discarded too);
+		// the following pair does NOT shift onto the wrong answer.
+		$this->assertSame(
+			array(
+				array( 'q' => 'Waterproof?', 'a' => 'Yes.' ),
+				array( 'q' => 'Warranty?', 'a' => '2 years' ),
+			),
+			Fields::get_qa( $reloaded )
+		);
+
+		// Non-numeric and zero IDs are absint-ed away.
+		$this->assertSame( array( 12, 34 ), Fields::get_accessories( $reloaded ) );
+		$this->assertSame( array( 56 ), Fields::get_substitutes( $reloaded ) );
+
+		$_POST = array();
+	}
+
+	public function test_save_ignores_request_without_valid_nonce(): void {
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
+		$product = $this->make_saved_product();
+
+		$_POST                           = $this->post_payload();
+		$_POST['shopgraph_fields_nonce'] = 'invalid';
+
+		( new Fields() )->save( $product );
+		$product->save();
+
+		$this->assertSame( array(), Fields::get_qa( wc_get_product( $product->get_id() ) ) );
+
+		$_POST = array();
+	}
+
+	public function test_save_requires_edit_product_capability(): void {
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'subscriber' ) ) );
+		$product = $this->make_saved_product();
+		$_POST   = $this->post_payload();
+
+		( new Fields() )->save( $product );
+		$product->save();
+
+		$this->assertSame( array(), Fields::get_qa( wc_get_product( $product->get_id() ) ) );
+
+		$_POST = array();
+		wp_set_current_user( 0 );
+	}
 }
