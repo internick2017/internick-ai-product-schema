@@ -31,6 +31,14 @@ class LlmsTxt {
 		// (priority 10) can 301 it to /llms.txt/ (the llms.txt spec wants the
 		// exact path, with no trailing slash).
 		add_action( 'template_redirect', array( $this, 'maybe_serve' ), 0 );
+
+		// Invalidate the cached index whenever the catalog or settings change.
+		add_action( 'woocommerce_new_product', array( __CLASS__, 'clear_cache' ) );
+		add_action( 'woocommerce_update_product', array( __CLASS__, 'clear_cache' ) );
+		add_action( 'woocommerce_delete_product', array( __CLASS__, 'clear_cache' ) );
+		add_action( 'woocommerce_trash_product', array( __CLASS__, 'clear_cache' ) );
+		add_action( 'update_option_' . Options::OPTION, array( __CLASS__, 'clear_cache' ) );
+		add_action( 'add_option_' . Options::OPTION, array( __CLASS__, 'clear_cache' ) );
 	}
 
 	/**
@@ -60,6 +68,14 @@ class LlmsTxt {
 		}
 
 		if ( ! Options::enabled( 'enable_llms' ) ) {
+			// Feature is off: a plain return would let WordPress render the
+			// homepage at /llms.txt (duplicate content). Serve a real 404.
+			global $wp_query;
+			if ( $wp_query ) {
+				$wp_query->set_404();
+			}
+			status_header( 404 );
+			nocache_headers();
 			return;
 		}
 
@@ -109,12 +125,22 @@ class LlmsTxt {
 		);
 
 		foreach ( $products as $product ) {
-			$url  = get_permalink( $product->get_id() );
-			$line = '- [' . $product->get_name() . '](' . $url . ')';
+			$url = get_permalink( $product->get_id() );
+			if ( ! $url ) {
+				continue;
+			}
 
-			$price = trim( html_entity_decode( wp_strip_all_tags( $product->get_price_html() ), ENT_QUOTES, 'UTF-8' ) );
-			if ( '' !== $price ) {
-				$line .= ': ' . $price;
+			// Escape Markdown link delimiters in the product name.
+			$name = str_replace( array( '\\', '[', ']' ), array( '\\\\', '\\[', '\\]' ), $product->get_name() );
+			$line = '- [' . $name . '](' . $url . ')';
+
+			// Single display price (sale-aware), not get_price_html()'s
+			// "was/now" pair; decode entities for the plain-text file.
+			if ( '' !== $product->get_price() ) {
+				$price = trim( html_entity_decode( wp_strip_all_tags( wc_price( wc_get_price_to_display( $product ) ) ), ENT_QUOTES, 'UTF-8' ) );
+				if ( '' !== $price ) {
+					$line .= ': ' . $price;
+				}
 			}
 			$lines[] = $line;
 		}

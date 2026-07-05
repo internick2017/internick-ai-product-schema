@@ -10,6 +10,7 @@
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       shopgraph
+ * Requires Plugins:  woocommerce
  * WC requires at least: 8.0
  *
  * @package ShopGraph
@@ -50,7 +51,16 @@ register_activation_hook(
 		flush_rewrite_rules();
 	}
 );
-register_deactivation_hook( __FILE__, 'flush_rewrite_rules' );
+register_deactivation_hook(
+	__FILE__,
+	static function () {
+		// The rule was re-registered on this request's init, so remove it from
+		// the compiled set first or the flush would just write it back.
+		global $wp_rewrite;
+		unset( $wp_rewrite->extra_rules_top['^llms\.txt$'] );
+		flush_rewrite_rules();
+	}
+);
 
 /**
  * Declare High-Performance Order Storage (HPOS) compatibility.

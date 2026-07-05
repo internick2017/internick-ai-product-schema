@@ -10,7 +10,7 @@ DEST=/var/www/html/wp/wp-content/plugins/shopgraph-dist
 rm -rf "$DEST"
 mkdir -p "$DEST"
 
-cp "$SRC/shopgraph.php" "$DEST/"
+cp "$SRC/shopgraph.php" "$SRC/uninstall.php" "$DEST/"
 cp "$SRC/readme.txt" "$DEST/"
 cp "$SRC/README.md" "$DEST/"
 cp -r "$SRC/src" "$DEST/"

@@ -60,7 +60,7 @@ class SettingsPage extends \WC_Settings_Page {
 			),
 			array(
 				'title'    => __( 'Schema mode', 'shopgraph' ),
-				'desc'     => __( 'Auto coexists with Yoast / Rank Math (no duplicate). Standalone always prints ShopGraph\'s own Product node.', 'shopgraph' ),
+				'desc'     => __( 'Auto enhances the Product schema WooCommerce (or Yoast / Rank Math) already outputs. Standalone suppresses those and prints ShopGraph\'s own complete Product node instead. Neither mode ever outputs a duplicate.', 'shopgraph' ),
 				'id'       => 'shopgraph_settings[schema_mode]',
 				'type'     => 'select',
 				'default'  => 'auto',

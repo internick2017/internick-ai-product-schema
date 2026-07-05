@@ -11,7 +11,7 @@ SRC=/var/www/html
 rm -f "$PLUGINS/shopgraph"
 rm -rf "$PLUGINS/shopgraph"
 mkdir -p "$PLUGINS/shopgraph"
-cp "$SRC/shopgraph.php" "$SRC/readme.txt" "$SRC/README.md" "$PLUGINS/shopgraph/"
+cp "$SRC/shopgraph.php" "$SRC/readme.txt" "$SRC/README.md" "$SRC/uninstall.php" "$PLUGINS/shopgraph/"
 cp -r "$SRC/src" "$SRC/languages" "$SRC/assets" "$PLUGINS/shopgraph/"
 
 # 2. Run Plugin Check.

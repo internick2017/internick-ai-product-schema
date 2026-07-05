@@ -10,7 +10,7 @@ DEST=$STAGE/shopgraph
 rm -rf "$STAGE"
 mkdir -p "$DEST"
 
-cp "$SRC/shopgraph.php" "$SRC/readme.txt" "$DEST/"
+cp "$SRC/shopgraph.php" "$SRC/readme.txt" "$SRC/uninstall.php" "$DEST/"
 cp -r "$SRC/src" "$SRC/languages" "$SRC/assets" "$DEST/"
 
 mkdir -p "$SRC/dist"
