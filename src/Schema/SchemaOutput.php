@@ -2,11 +2,13 @@
 /**
  * Decides how the Product JSON-LD reaches the page.
  *
- * - No SEO plugin: print a standalone <script type="application/ld+json"> on
- *   product pages via wp_footer.
- * - Yoast / Rank Math active: hook their schema graph, find the existing Product
- *   node and merge ShopGraph's AI attributes into it (never a duplicate Product).
- *   If the SEO plugin emits no Product node, append a complete one.
+ * - Auto mode: WooCommerce Core always emits Product structured data, so the AI
+ *   attributes are merged into WC's node; when Yoast / Rank Math are active
+ *   their graph's Product node (if any) is enhanced too. Nothing is ever
+ *   appended, so there is never a duplicate Product node.
+ * - Standalone mode (forced via settings): suppress WC's node AND strip any
+ *   Product piece from the SEO plugin's graph, then print ShopGraph's own
+ *   complete node on wp_footer.
  *
  * @package ShopGraph
  */
@@ -40,9 +42,12 @@ class SchemaOutput {
 		}
 
 		if ( $this->should_output_standalone() ) {
-			// Forced standalone: suppress WooCommerce's own Product schema and
-			// print ShopGraph's complete node instead (no duplicate Product).
+			// Forced standalone: suppress WooCommerce's own Product schema, strip
+			// any Product piece from an active SEO plugin's graph, and print
+			// ShopGraph's complete node instead (no duplicate Product).
 			add_filter( 'woocommerce_structured_data_product', '__return_empty_array', 99 );
+			add_filter( 'wpseo_schema_graph', array( $this, 'filter_strip_products' ), 30, 2 );
+			add_filter( 'rank_math/json_ld', array( $this, 'filter_strip_products' ), 99, 2 );
 			add_action( 'wp_footer', array( $this, 'print_standalone' ) );
 			return;
 		}
@@ -101,7 +106,44 @@ class SchemaOutput {
 		}
 
 		$schema = $this->builder->build( $product );
-		echo '<script type="application/ld+json">' . wp_json_encode( $schema ) . '</script>' . "\n";
+		// JSON_HEX_TAG hardens against any future "</script>" in values.
+		echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
+	}
+
+	/**
+	 * Standalone-mode filter for SEO plugin graphs: remove their Product pieces
+	 * so ShopGraph's standalone node is the only Product on the page.
+	 *
+	 * @param mixed $graph  Schema graph (array of pieces).
+	 * @param mixed $unused Filter's second arg (Yoast context / Rank Math JsonLD).
+	 * @return mixed
+	 */
+	public function filter_strip_products( $graph, $unused = null ) {
+		if ( ! is_array( $graph ) || ! function_exists( 'is_product' ) || ! is_product() ) {
+			return $graph;
+		}
+		return $this->strip_product_pieces( $graph );
+	}
+
+	/**
+	 * Remove every Product piece from a schema graph (pure).
+	 *
+	 * List-style graphs (Yoast) are re-indexed so they still JSON-encode as an
+	 * array; associative graphs (Rank Math) keep their string keys.
+	 *
+	 * @param array<int|string, mixed> $graph Schema graph pieces.
+	 * @return array<int|string, mixed>
+	 */
+	public function strip_product_pieces( array $graph ): array {
+		$was_list = array_keys( $graph ) === range( 0, count( $graph ) - 1 );
+
+		foreach ( $graph as $key => $piece ) {
+			if ( is_array( $piece ) && $this->is_product_piece( $piece ) ) {
+				unset( $graph[ $key ] );
+			}
+		}
+
+		return $was_list ? array_values( $graph ) : $graph;
 	}
 
 	/**
@@ -144,8 +186,13 @@ class SchemaOutput {
 	}
 
 	/**
-	 * Merge AI attributes into the first Product node of a schema graph, or
-	 * append a complete Product node when the graph has none.
+	 * Merge AI attributes into the first Product node of a schema graph.
+	 *
+	 * MERGE-ONLY by design: if the SEO plugin's graph has no Product node (e.g.
+	 * free Yoast without the WooCommerce SEO addon), the graph is returned
+	 * unchanged — WooCommerce Core's own Product node (already enhanced via the
+	 * woocommerce_structured_data_product filter) covers the page, and appending
+	 * one here would create the duplicate this plugin promises to avoid.
 	 *
 	 * Pure and key-preserving, so it is safe for both Yoast's list-style graph
 	 * and Rank Math's associative graph, and easy to unit test.
@@ -155,24 +202,16 @@ class SchemaOutput {
 	 * @return array<int|string, mixed>
 	 */
 	public function inject_into_graph( array $graph, \WC_Product $product ): array {
-		$found_key = null;
 		foreach ( $graph as $key => $piece ) {
 			if ( is_array( $piece ) && $this->is_product_piece( $piece ) ) {
-				$found_key = $key;
-				break;
+				$ai = $this->builder->ai_attributes( $product );
+				if ( array() !== $ai ) {
+					$graph[ $key ] = array_merge( $graph[ $key ], $ai );
+				}
+				return $graph;
 			}
 		}
 
-		if ( null !== $found_key ) {
-			$ai = $this->builder->ai_attributes( $product );
-			if ( array() !== $ai ) {
-				$graph[ $found_key ] = array_merge( $graph[ $found_key ], $ai );
-			}
-			return $graph;
-		}
-
-		// SEO plugin emitted no Product node: add our complete one.
-		$graph[] = $this->builder->build( $product );
 		return $graph;
 	}
 

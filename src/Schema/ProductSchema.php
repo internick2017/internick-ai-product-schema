@@ -37,8 +37,11 @@ class ProductSchema {
 			'@context' => 'https://schema.org',
 			'@type'    => 'Product',
 			'name'     => $product->get_name(),
-			'url'      => $permalink,
 		);
+
+		if ( $permalink ) {
+			$schema['url'] = $permalink;
+		}
 
 		$description = $product->get_short_description() ? $product->get_short_description() : $product->get_description();
 		$description = trim( wp_strip_all_tags( $description ) );
@@ -64,13 +67,20 @@ class ProductSchema {
 			);
 		}
 
-		$schema['offers'] = array(
-			'@type'         => 'Offer',
-			'price'         => $product->get_price(),
-			'priceCurrency' => get_woocommerce_currency(),
-			'availability'  => $this->availability( $product ),
-			'url'           => $permalink,
-		);
+		// An Offer without a price is invalid for consumers (Google requires
+		// price); omit offers entirely for price-less products.
+		if ( '' !== $product->get_price() ) {
+			$offer = array(
+				'@type'         => 'Offer',
+				'price'         => (string) wc_get_price_to_display( $product ),
+				'priceCurrency' => get_woocommerce_currency(),
+				'availability'  => $this->availability( $product ),
+			);
+			if ( $permalink ) {
+				$offer['url'] = $permalink;
+			}
+			$schema['offers'] = $offer;
+		}
 
 		if ( $product->get_rating_count() > 0 ) {
 			$schema['aggregateRating'] = array(
@@ -190,13 +200,19 @@ class ProductSchema {
 		$refs = array();
 		foreach ( $ids as $id ) {
 			$linked = wc_get_product( $id );
-			if ( $linked instanceof \WC_Product ) {
-				$refs[] = array(
-					'@type' => 'Product',
-					'name'  => $linked->get_name(),
-					'url'   => get_permalink( $linked->get_id() ),
-				);
+			if ( ! $linked instanceof \WC_Product ) {
+				continue;
 			}
+			$ref = array(
+				'@type' => 'Product',
+				'name'  => $linked->get_name(),
+			);
+
+			$url = get_permalink( $linked->get_id() );
+			if ( $url ) {
+				$ref['url'] = $url;
+			}
+			$refs[] = $ref;
 		}
 		return $refs;
 	}
