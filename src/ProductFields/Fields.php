@@ -7,10 +7,10 @@
  * list, plus compatible accessories and substitute products. All data is stored
  * on the product via the WooCommerce CRUD API (never direct post meta / SQL).
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
-namespace ShopGraph\ProductFields;
+namespace Internick\AIProductSchema\ProductFields;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -19,9 +19,9 @@ defined( 'ABSPATH' ) || exit;
  */
 class Fields {
 
-	public const META_QA          = '_shopgraph_qa';
-	public const META_ACCESSORIES = '_shopgraph_accessories';
-	public const META_SUBSTITUTES = '_shopgraph_substitutes';
+	public const META_QA          = '_internick_aips_qa';
+	public const META_ACCESSORIES = '_internick_aips_accessories';
+	public const META_SUBSTITUTES = '_internick_aips_substitutes';
 
 	/**
 	 * Hook the tab, panel, and save routine into the product editor.
@@ -49,10 +49,10 @@ class Fields {
 		}
 
 		wp_enqueue_script(
-			'shopgraph-product-fields',
-			plugins_url( 'assets/js/product-fields.js', SHOPGRAPH_FILE ),
+			'internick-aips-product-fields',
+			plugins_url( 'assets/js/product-fields.js', INTERNICK_AIPS_FILE ),
 			array(),
-			SHOPGRAPH_VERSION,
+			INTERNICK_AIPS_VERSION,
 			true
 		);
 	}
@@ -64,9 +64,9 @@ class Fields {
 	 * @return array
 	 */
 	public function add_tab( array $tabs ): array {
-		$tabs['shopgraph'] = array(
-			'label'    => __( 'AI Attributes', 'shopgraph' ),
-			'target'   => 'shopgraph_product_data',
+		$tabs['internick-ai-product-schema'] = array(
+			'label'    => __( 'AI Attributes', 'internick-ai-product-schema' ),
+			'target'   => 'internick_aips_product_data',
 			'priority' => 65,
 			'class'    => array(),
 		);
@@ -92,36 +92,36 @@ class Fields {
 		$accessories  = self::get_accessories( $product );
 		$substitutes  = self::get_substitutes( $product );
 
-		echo '<div id="shopgraph_product_data" class="panel woocommerce_options_panel">';
-		wp_nonce_field( 'shopgraph_save_fields', 'shopgraph_fields_nonce' );
+		echo '<div id="internick_aips_product_data" class="panel woocommerce_options_panel">';
+		wp_nonce_field( 'internick_aips_save_fields', 'internick_aips_fields_nonce' );
 
 		echo '<div class="options_group">';
-		echo '<p class="form-field"><label>' . esc_html__( 'Product Q&amp;A', 'shopgraph' ) . '</label><span class="description">'
-			. esc_html__( 'Common questions and answers about this product, surfaced to AI shopping agents.', 'shopgraph' )
+		echo '<p class="form-field"><label>' . esc_html__( 'Product Q&amp;A', 'internick-ai-product-schema' ) . '</label><span class="description">'
+			. esc_html__( 'Common questions and answers about this product, surfaced to AI shopping agents.', 'internick-ai-product-schema' )
 			. '</span></p>';
 
-		echo '<div class="shopgraph-qa-rows">';
+		echo '<div class="internick-aips-qa-rows">';
 		// Always render at least one blank row so the field is usable when empty.
 		$rows = empty( $qa ) ? array( array( 'q' => '', 'a' => '' ) ) : $qa;
 		foreach ( $rows as $row ) {
 			$this->render_qa_row( (string) ( $row['q'] ?? '' ), (string) ( $row['a'] ?? '' ) );
 		}
 		echo '</div>';
-		echo '<p class="form-field"><button type="button" class="button shopgraph-add-qa">'
-			. esc_html__( 'Add Q&amp;A row', 'shopgraph' ) . '</button></p>';
+		echo '<p class="form-field"><button type="button" class="button internick-aips-add-qa">'
+			. esc_html__( 'Add Q&amp;A row', 'internick-ai-product-schema' ) . '</button></p>';
 		echo '</div>';
 
 		echo '<div class="options_group">';
 		$this->render_product_select(
-			'shopgraph_accessories',
-			__( 'Compatible accessories', 'shopgraph' ),
-			__( 'Products that work together with this one (accessories or spare parts).', 'shopgraph' ),
+			'internick_aips_accessories',
+			__( 'Compatible accessories', 'internick-ai-product-schema' ),
+			__( 'Products that work together with this one (accessories or spare parts).', 'internick-ai-product-schema' ),
 			$accessories
 		);
 		$this->render_product_select(
-			'shopgraph_substitutes',
-			__( 'Substitute products', 'shopgraph' ),
-			__( 'Similar products an agent can suggest when this one is unavailable.', 'shopgraph' ),
+			'internick_aips_substitutes',
+			__( 'Substitute products', 'internick-ai-product-schema' ),
+			__( 'Similar products an agent can suggest when this one is unavailable.', 'internick-ai-product-schema' ),
 			$substitutes
 		);
 		echo '</div>';
@@ -136,12 +136,12 @@ class Fields {
 	 * @param string $a Answer.
 	 */
 	private function render_qa_row( string $q, string $a ): void {
-		echo '<p class="form-field shopgraph-qa-row">';
-		echo '<input type="text" name="shopgraph_q[]" class="short" style="width:32%" placeholder="'
-			. esc_attr__( 'Question', 'shopgraph' ) . '" value="' . esc_attr( $q ) . '" /> ';
-		echo '<input type="text" name="shopgraph_a[]" style="width:52%" placeholder="'
-			. esc_attr__( 'Answer', 'shopgraph' ) . '" value="' . esc_attr( $a ) . '" /> ';
-		echo '<button type="button" class="button shopgraph-remove-qa">' . esc_html__( 'Remove', 'shopgraph' ) . '</button>';
+		echo '<p class="form-field internick-aips-qa-row">';
+		echo '<input type="text" name="internick_aips_q[]" class="short" style="width:32%" placeholder="'
+			. esc_attr__( 'Question', 'internick-ai-product-schema' ) . '" value="' . esc_attr( $q ) . '" /> ';
+		echo '<input type="text" name="internick_aips_a[]" style="width:52%" placeholder="'
+			. esc_attr__( 'Answer', 'internick-ai-product-schema' ) . '" value="' . esc_attr( $a ) . '" /> ';
+		echo '<button type="button" class="button internick-aips-remove-qa">' . esc_html__( 'Remove', 'internick-ai-product-schema' ) . '</button>';
 		echo '</p>';
 	}
 
@@ -156,7 +156,7 @@ class Fields {
 	private function render_product_select( string $name, string $label, string $desc, array $selected ): void {
 		echo '<p class="form-field"><label for="' . esc_attr( $name ) . '">' . esc_html( $label ) . '</label>';
 		echo '<select class="wc-product-search" multiple="multiple" style="width:50%" id="' . esc_attr( $name ) . '" name="'
-			. esc_attr( $name ) . '[]" data-placeholder="' . esc_attr__( 'Search for a product&hellip;', 'shopgraph' )
+			. esc_attr( $name ) . '[]" data-placeholder="' . esc_attr__( 'Search for a product&hellip;', 'internick-ai-product-schema' )
 			. '" data-action="woocommerce_json_search_products_and_variations">';
 		foreach ( $selected as $product_id ) {
 			$product = wc_get_product( $product_id );
@@ -178,8 +178,8 @@ class Fields {
 	 */
 	public function save( \WC_Product $product ): void {
 		if (
-			! isset( $_POST['shopgraph_fields_nonce'] )
-			|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['shopgraph_fields_nonce'] ) ), 'shopgraph_save_fields' )
+			! isset( $_POST['internick_aips_fields_nonce'] )
+			|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['internick_aips_fields_nonce'] ) ), 'internick_aips_save_fields' )
 		) {
 			return;
 		}
@@ -188,8 +188,8 @@ class Fields {
 			return;
 		}
 
-		$questions = isset( $_POST['shopgraph_q'] ) ? (array) wp_unslash( $_POST['shopgraph_q'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$answers   = isset( $_POST['shopgraph_a'] ) ? (array) wp_unslash( $_POST['shopgraph_a'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$questions = isset( $_POST['internick_aips_q'] ) ? (array) wp_unslash( $_POST['internick_aips_q'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$answers   = isset( $_POST['internick_aips_a'] ) ? (array) wp_unslash( $_POST['internick_aips_a'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 		$qa = array();
 		foreach ( $questions as $i => $question ) {
@@ -204,11 +204,11 @@ class Fields {
 		}
 		$product->update_meta_data( self::META_QA, $qa );
 
-		$accessories = isset( $_POST['shopgraph_accessories'] )
-			? array_map( 'absint', (array) wp_unslash( $_POST['shopgraph_accessories'] ) )
+		$accessories = isset( $_POST['internick_aips_accessories'] )
+			? array_map( 'absint', (array) wp_unslash( $_POST['internick_aips_accessories'] ) )
 			: array();
-		$substitutes = isset( $_POST['shopgraph_substitutes'] )
-			? array_map( 'absint', (array) wp_unslash( $_POST['shopgraph_substitutes'] ) )
+		$substitutes = isset( $_POST['internick_aips_substitutes'] )
+			? array_map( 'absint', (array) wp_unslash( $_POST['internick_aips_substitutes'] ) )
 			: array();
 
 		$product->update_meta_data( self::META_ACCESSORIES, array_values( array_filter( $accessories ) ) );

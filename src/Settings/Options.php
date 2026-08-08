@@ -1,11 +1,11 @@
 <?php
 /**
- * Typed accessor over the single `shopgraph_settings` array option.
+ * Typed accessor over the single `internick_aips_settings` array option.
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
-namespace ShopGraph\Settings;
+namespace Internick\AIProductSchema\Settings;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Options {
 
-	public const OPTION = 'shopgraph_settings';
+	public const OPTION = 'internick_aips_settings';
 
 	/**
 	 * Default values (checkboxes use WooCommerce's 'yes'/'no' convention).

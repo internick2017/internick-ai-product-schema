@@ -2,10 +2,10 @@
 /**
  * robots.txt directives that welcome AI shopping crawlers + reference llms.txt.
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
-use ShopGraph\Llms\RobotsTxt;
+use Internick\AIProductSchema\Llms\RobotsTxt;
 
 class RobotsTxtTest extends WP_UnitTestCase {
 

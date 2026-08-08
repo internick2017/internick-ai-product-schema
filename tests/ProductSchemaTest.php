@@ -2,10 +2,10 @@
 /**
  * Product JSON-LD builder: schema.org Product from WooCommerce CRUD + AI attributes.
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
-use ShopGraph\Schema\ProductSchema;
+use Internick\AIProductSchema\Schema\ProductSchema;
 
 class ProductSchemaTest extends WP_UnitTestCase {
 
@@ -39,9 +39,9 @@ class ProductSchemaTest extends WP_UnitTestCase {
 		$product = new WC_Product_Simple();
 		$product->set_name( 'Phone' );
 		$product->set_regular_price( '499' );
-		$product->update_meta_data( '_shopgraph_qa', array( array( 'q' => 'Color?', 'a' => 'Black' ) ) );
-		$product->update_meta_data( '_shopgraph_accessories', array( $accessory->get_id() ) );
-		$product->update_meta_data( '_shopgraph_substitutes', array( $substitute->get_id() ) );
+		$product->update_meta_data( '_internick_aips_qa', array( array( 'q' => 'Color?', 'a' => 'Black' ) ) );
+		$product->update_meta_data( '_internick_aips_accessories', array( $accessory->get_id() ) );
+		$product->update_meta_data( '_internick_aips_substitutes', array( $substitute->get_id() ) );
 		$product->save();
 
 		$schema = ( new ProductSchema() )->build( wc_get_product( $product->get_id() ) );

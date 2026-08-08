@@ -3,14 +3,14 @@
  * Proves the test harness loads WordPress + WooCommerce + the plugin,
  * and that products can be created/read via the WooCommerce CRUD API.
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
 class HarnessTest extends WP_UnitTestCase {
 
 	public function test_wp_woocommerce_and_plugin_are_loaded(): void {
 		$this->assertTrue( class_exists( 'WooCommerce' ), 'WooCommerce should be loaded' );
-		$this->assertTrue( class_exists( \ShopGraph\Plugin::class ), 'ShopGraph\\Plugin should autoload' );
+		$this->assertTrue( class_exists( \Internick\AIProductSchema\Plugin::class ), 'Internick\AIProductSchema\\Plugin should autoload' );
 	}
 
 	public function test_can_create_and_read_a_product_via_crud(): void {

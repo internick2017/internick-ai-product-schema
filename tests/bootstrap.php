@@ -1,8 +1,8 @@
 <?php
 /**
- * PHPUnit bootstrap: load the WordPress test suite with WooCommerce + ShopGraph.
+ * PHPUnit bootstrap: load the WordPress test suite with WooCommerce + AI Product Schema.
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
 $_tests_dir = getenv( 'WP_PHPUNIT__DIR' );
@@ -22,7 +22,7 @@ tests_add_filter(
 	'muplugins_loaded',
 	static function () {
 		require WP_CONTENT_DIR . '/plugins/woocommerce/woocommerce.php';
-		require dirname( __DIR__ ) . '/shopgraph.php';
+		require dirname( __DIR__ ) . '/internick-ai-product-schema.php';
 	}
 );
 

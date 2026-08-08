@@ -2,19 +2,19 @@
 /**
  * AI product attribute fields: save + read via the WooCommerce CRUD API.
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
-use ShopGraph\ProductFields\Fields;
+use Internick\AIProductSchema\ProductFields\Fields;
 
 class FieldsTest extends WP_UnitTestCase {
 
 	public function test_saves_and_reads_ai_attributes_via_crud(): void {
 		$product = new WC_Product_Simple();
 		$product->set_name( 'AI Attr Product' );
-		$product->update_meta_data( '_shopgraph_qa', array( array( 'q' => 'Waterproof?', 'a' => 'Yes, IP68.' ) ) );
-		$product->update_meta_data( '_shopgraph_accessories', array( 12, 34 ) );
-		$product->update_meta_data( '_shopgraph_substitutes', array( 123, 456 ) );
+		$product->update_meta_data( '_internick_aips_qa', array( array( 'q' => 'Waterproof?', 'a' => 'Yes, IP68.' ) ) );
+		$product->update_meta_data( '_internick_aips_accessories', array( 12, 34 ) );
+		$product->update_meta_data( '_internick_aips_substitutes', array( 123, 456 ) );
 		$product->save();
 
 		$reloaded = wc_get_product( $product->get_id() );
@@ -46,11 +46,11 @@ class FieldsTest extends WP_UnitTestCase {
 
 	private function post_payload(): array {
 		return array(
-			'shopgraph_fields_nonce' => wp_create_nonce( 'shopgraph_save_fields' ),
-			'shopgraph_q'            => array( 'Waterproof?', '', 'Warranty?' ),
-			'shopgraph_a'            => array( 'Yes.', 'Orphan answer', '2 years' ),
-			'shopgraph_accessories'  => array( '12', 'abc', '0', '34' ),
-			'shopgraph_substitutes'  => array( '56' ),
+			'internick_aips_fields_nonce' => wp_create_nonce( 'internick_aips_save_fields' ),
+			'internick_aips_q'            => array( 'Waterproof?', '', 'Warranty?' ),
+			'internick_aips_a'            => array( 'Yes.', 'Orphan answer', '2 years' ),
+			'internick_aips_accessories'  => array( '12', 'abc', '0', '34' ),
+			'internick_aips_substitutes'  => array( '56' ),
 		);
 	}
 
@@ -85,7 +85,7 @@ class FieldsTest extends WP_UnitTestCase {
 		$product = $this->make_saved_product();
 
 		$_POST                           = $this->post_payload();
-		$_POST['shopgraph_fields_nonce'] = 'invalid';
+		$_POST['internick_aips_fields_nonce'] = 'invalid';
 
 		( new Fields() )->save( $product );
 		$product->save();

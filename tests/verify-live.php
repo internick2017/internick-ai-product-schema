@@ -1,10 +1,10 @@
 <?php
 /**
- * Live verification helper: confirms ShopGraph hooks are registered and
+ * Live verification helper: confirms AI Product Schema hooks are registered and
  * produce output on the running site. Run:
  *   ddev exec wp eval-file tests/verify-live.php --path=wp
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
 WP_CLI::line( 'robots_txt filter registered at priority: ' . var_export( has_filter( 'robots_txt' ), true ) );

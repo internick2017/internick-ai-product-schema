@@ -2,10 +2,10 @@
 /**
  * /llms.txt builder: store summary + product index for AI crawlers.
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
-use ShopGraph\Llms\LlmsTxt;
+use Internick\AIProductSchema\Llms\LlmsTxt;
 
 class LlmsTxtTest extends WP_UnitTestCase {
 
@@ -57,7 +57,7 @@ class LlmsTxtTest extends WP_UnitTestCase {
 	}
 
 	public function test_product_update_clears_cached_body(): void {
-		set_transient( 'shopgraph_llms_txt', 'stale body', HOUR_IN_SECONDS );
+		set_transient( 'internick_aips_llms_txt', 'stale body', HOUR_IN_SECONDS );
 
 		$product = new WC_Product_Simple();
 		$product->set_name( 'Cache Buster' );
@@ -65,18 +65,18 @@ class LlmsTxtTest extends WP_UnitTestCase {
 		$product->set_status( 'publish' );
 		$product->save(); // fires woocommerce_new_product / update hooks
 
-		$this->assertFalse( get_transient( 'shopgraph_llms_txt' ) );
+		$this->assertFalse( get_transient( 'internick_aips_llms_txt' ) );
 	}
 
 	public function test_settings_change_clears_cached_body(): void {
 		// Seed the option first so the change below goes through update_option.
-		update_option( 'shopgraph_settings', array( 'enable_llms' => 'yes' ) );
-		set_transient( 'shopgraph_llms_txt', 'stale body', HOUR_IN_SECONDS );
+		update_option( 'internick_aips_settings', array( 'enable_llms' => 'yes' ) );
+		set_transient( 'internick_aips_llms_txt', 'stale body', HOUR_IN_SECONDS );
 
-		update_option( 'shopgraph_settings', array( 'enable_llms' => 'no' ) );
+		update_option( 'internick_aips_settings', array( 'enable_llms' => 'no' ) );
 
-		$this->assertFalse( get_transient( 'shopgraph_llms_txt' ) );
+		$this->assertFalse( get_transient( 'internick_aips_llms_txt' ) );
 
-		delete_option( 'shopgraph_settings' );
+		delete_option( 'internick_aips_settings' );
 	}
 }

@@ -1,9 +1,9 @@
 <?php
 /**
- * Seed demo products with ShopGraph AI attributes for manual DDEV verification.
+ * Seed demo products with AI Product Schema AI attributes for manual DDEV verification.
  * Run: ddev exec wp eval-file tests/seed-demo.php --path=wp
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
 $make_simple = static function ( string $name, string $price, string $sku ): int {
@@ -19,13 +19,13 @@ $case_id  = $make_simple( 'Rugged Phone Case', '19.90', 'SG-CASE-1' );
 $rival_id = $make_simple( 'Rival Phone X', '499.00', 'SG-RIVAL-1' );
 
 $phone = new WC_Product_Simple();
-$phone->set_name( 'ShopGraph Demo Phone' );
+$phone->set_name( 'AI Product Schema Demo Phone' );
 $phone->set_status( 'publish' );
 $phone->set_regular_price( '699.00' );
 $phone->set_sku( 'SG-PHONE-1' );
-$phone->set_short_description( 'A demo product showcasing ShopGraph AI attributes.' );
+$phone->set_short_description( 'A demo product showcasing AI Product Schema AI attributes.' );
 $phone->update_meta_data(
-	'_shopgraph_qa',
+	'_internick_aips_qa',
 	array(
 		array(
 			'q' => 'Is it waterproof?',
@@ -37,12 +37,12 @@ $phone->update_meta_data(
 		),
 	)
 );
-$phone->update_meta_data( '_shopgraph_accessories', array( $case_id ) );
-$phone->update_meta_data( '_shopgraph_substitutes', array( $rival_id ) );
+$phone->update_meta_data( '_internick_aips_accessories', array( $case_id ) );
+$phone->update_meta_data( '_internick_aips_substitutes', array( $rival_id ) );
 $phone_id = $phone->save();
 
 // Clear the cached llms.txt so the new products show immediately.
-delete_transient( 'shopgraph_llms_txt' );
+delete_transient( 'internick_aips_llms_txt' );
 
 WP_CLI::success( "Seeded phone #{$phone_id} (case #{$case_id}, rival #{$rival_id})" );
 WP_CLI::line( 'PHONE_URL=' . get_permalink( $phone_id ) );

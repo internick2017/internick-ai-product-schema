@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       ShopGraph for WooCommerce
+ * Plugin Name:       Internick - AI Product Schema
  * Description:        Make your WooCommerce products discoverable and purchasable by AI shopping agents (complete Product schema, AI attributes, llms.txt).
  * Version:           0.1.0
  * Requires at least: 6.4
@@ -9,26 +9,26 @@
  * Author URI:        https://nickgranados.com
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       shopgraph
+ * Text Domain:       internick-ai-product-schema
  * Requires Plugins:  woocommerce
  * WC requires at least: 8.0
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'SHOPGRAPH_FILE', __FILE__ );
-define( 'SHOPGRAPH_VERSION', '0.1.0' );
+define( 'INTERNICK_AIPS_FILE', __FILE__ );
+define( 'INTERNICK_AIPS_VERSION', '0.1.0' );
 
 /**
- * Autoload ShopGraph classes (PSR-4). The plugin has no runtime Composer
+ * Autoload AI Product Schema classes (PSR-4). The plugin has no runtime Composer
  * dependencies, so a tiny SPL autoloader keeps the shipped plugin free of a
  * vendor/ directory.
  */
 spl_autoload_register(
 	static function ( $class ) {
-		$prefix = 'ShopGraph\\';
+		$prefix = 'Internick\\AIProductSchema\\';
 		$len    = strlen( $prefix );
 		if ( 0 !== strncmp( $prefix, $class, $len ) ) {
 			return;
@@ -47,7 +47,7 @@ spl_autoload_register(
 register_activation_hook(
 	__FILE__,
 	static function () {
-		( new \ShopGraph\Llms\LlmsTxt() )->add_rewrite_rule();
+		( new \Internick\AIProductSchema\Llms\LlmsTxt() )->add_rewrite_rule();
 		flush_rewrite_rules();
 	}
 );
@@ -85,11 +85,11 @@ add_action(
 			add_action(
 				'admin_notices',
 				static function () {
-					echo '<div class="notice notice-error"><p>' . esc_html__( 'ShopGraph requires WooCommerce to be installed and active.', 'shopgraph' ) . '</p></div>';
+					echo '<div class="notice notice-error"><p>' . esc_html__( 'AI Product Schema requires WooCommerce to be installed and active.', 'internick-ai-product-schema' ) . '</p></div>';
 				}
 			);
 			return;
 		}
-		\ShopGraph\Plugin::instance()->boot( __FILE__ );
+		\Internick\AIProductSchema\Plugin::instance()->boot( __FILE__ );
 	}
 );

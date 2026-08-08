@@ -1,11 +1,11 @@
 <?php
 /**
- * WordPress test-suite config for ShopGraph (DDEV local).
+ * WordPress test-suite config for AI Product Schema (DDEV local).
  * Reuses the DDEV `db` database but with a dedicated `wptests_` table prefix,
  * so the test tables stay isolated from the dev site's `wp_` tables (the test
  * suite only drops/creates tables with the configured prefix).
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
 define( 'ABSPATH', '/var/www/html/wp/' );
@@ -23,5 +23,5 @@ $table_prefix = 'wptests_';
 
 define( 'WP_TESTS_DOMAIN', 'shopgraph.ddev.site' );
 define( 'WP_TESTS_EMAIL', 'admin@example.com' );
-define( 'WP_TESTS_TITLE', 'ShopGraph Tests' );
+define( 'WP_TESTS_TITLE', 'AI Product Schema Tests' );
 define( 'WP_PHP_BINARY', 'php' );

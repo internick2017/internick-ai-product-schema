@@ -1,4 +1,4 @@
-# ShopGraph for WooCommerce
+# Internick - AI Product Schema
 
 Make WooCommerce products discoverable and purchasable by AI shopping agents: complete Product JSON-LD, AI product attributes, and an `llms.txt` catalog index.
 
@@ -17,11 +17,11 @@ AI shopping agents (ChatGPT, Gemini, Perplexity, Claude) research and recommend 
 | **AI attributes** | Q&A, compatible accessories, and substitutes added in the classic product editor, mapped to verified schema.org properties (`subjectOf`/FAQ, `isRelatedTo`, `isSimilarTo`). |
 | **`/llms.txt`** | Markdown product index following the [llms.txt](https://llmstxt.org/) spec. |
 | **AI `robots.txt`** | Welcomes GPTBot, Google-Extended, ClaudeBot, PerplexityBot, and others; references `/llms.txt`. |
-| **Settings** | Per-feature toggles under WooCommerce → Settings → ShopGraph. |
+| **Settings** | Per-feature toggles under WooCommerce → Settings → AI Product Schema. |
 
 ## Engineering notes
 
-- **Architecture:** OOP PHP (PSR-4, `ShopGraph\` namespace), booted on `plugins_loaded` only when WooCommerce is active. Small single-responsibility services wired in `Plugin::boot()`.
+- **Architecture:** OOP PHP (PSR-4, `Internick\AIProductSchema\` namespace), booted on `plugins_loaded` only when WooCommerce is active. Small single-responsibility services wired in `Plugin::boot()`.
 - **Data access:** exclusively through the WooCommerce CRUD API (`wc_get_product()`, `$product->get_*()` / `update_meta_data()` / `save()`), never direct SQL or post meta.
 - **Schema correctness:** every schema.org property and third-party filter was verified against official docs before use (for example, "compatible accessories" maps to `isRelatedTo`, not the inverse `isAccessoryOrSparePartFor`).
 - **HPOS:** declares `custom_order_tables` compatibility.

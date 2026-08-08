@@ -3,12 +3,12 @@
  * Serves `/llms.txt`: a Markdown store summary + product index for AI crawlers,
  * following the llms.txt spec (https://llmstxt.org/).
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
-namespace ShopGraph\Llms;
+namespace Internick\AIProductSchema\Llms;
 
-use ShopGraph\Settings\Options;
+use Internick\AIProductSchema\Settings\Options;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,8 +17,8 @@ defined( 'ABSPATH' ) || exit;
  */
 class LlmsTxt {
 
-	private const QUERY_VAR    = 'shopgraph_llms';
-	private const CACHE_KEY    = 'shopgraph_llms_txt';
+	private const QUERY_VAR    = 'internick_aips_llms';
+	private const CACHE_KEY    = 'internick_aips_llms_txt';
 	private const MAX_PRODUCTS = 200;
 
 	/**

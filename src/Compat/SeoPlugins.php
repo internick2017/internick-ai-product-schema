@@ -1,12 +1,12 @@
 <?php
 /**
- * Detects an active SEO plugin that already emits Product schema, so ShopGraph
+ * Detects an active SEO plugin that already emits Product schema, so AI Product Schema
  * can coexist with it instead of printing a duplicate Product node.
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
-namespace ShopGraph\Compat;
+namespace Internick\AIProductSchema\Compat;
 
 defined( 'ABSPATH' ) || exit;
 

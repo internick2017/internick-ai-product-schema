@@ -3,12 +3,12 @@
  * Schema output + coexistence with WooCommerce Core / Yoast / Rank Math:
  * merge-only, never a duplicate Product node.
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
-use ShopGraph\Compat\SeoPlugins;
-use ShopGraph\Schema\ProductSchema;
-use ShopGraph\Schema\SchemaOutput;
+use Internick\AIProductSchema\Compat\SeoPlugins;
+use Internick\AIProductSchema\Schema\ProductSchema;
+use Internick\AIProductSchema\Schema\SchemaOutput;
 
 class SchemaOutputTest extends WP_UnitTestCase {
 
@@ -23,15 +23,15 @@ class SchemaOutputTest extends WP_UnitTestCase {
 
 		$product = new WC_Product_Simple();
 		$product->set_name( 'Main Product' );
-		$product->update_meta_data( '_shopgraph_qa', array( array( 'q' => 'Warranty?', 'a' => '2 years' ) ) );
-		$product->update_meta_data( '_shopgraph_substitutes', array( $substitute->get_id() ) );
+		$product->update_meta_data( '_internick_aips_qa', array( array( 'q' => 'Warranty?', 'a' => '2 years' ) ) );
+		$product->update_meta_data( '_internick_aips_substitutes', array( $substitute->get_id() ) );
 		$product->save();
 
 		return wc_get_product( $product->get_id() );
 	}
 
 	public function test_auto_mode_does_not_output_standalone(): void {
-		// In auto mode ShopGraph enhances the existing Product node (WooCommerce
+		// In auto mode AI Product Schema enhances the existing Product node (WooCommerce
 		// Core / SEO plugin) instead of printing a second, standalone one.
 		$this->assertNull( ( new SeoPlugins() )->active() );
 		$this->assertFalse( $this->make_output()->should_output_standalone() );

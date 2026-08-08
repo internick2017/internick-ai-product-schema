@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
 # Build the WordPress.org distribution ZIP with the root folder named exactly
-# 'shopgraph' (must match the text domain) and only the shipped files.
+# 'internick-ai-product-schema' (must match the text domain) and only the shipped files.
 set -euo pipefail
 
 SRC=/var/www/html
-STAGE=/tmp/shopgraph-pkg
-DEST=$STAGE/shopgraph
+STAGE=/tmp/internick-aips-pkg
+DEST=$STAGE/internick-ai-product-schema
 
 rm -rf "$STAGE"
 mkdir -p "$DEST"
 
-cp "$SRC/shopgraph.php" "$SRC/readme.txt" "$SRC/uninstall.php" "$DEST/"
+cp "$SRC/internick-ai-product-schema.php" "$SRC/readme.txt" "$SRC/uninstall.php" "$DEST/"
 cp -r "$SRC/src" "$SRC/languages" "$SRC/assets" "$DEST/"
 
 mkdir -p "$SRC/dist"
-rm -f "$SRC/dist/shopgraph.zip"
-( cd "$STAGE" && zip -rq "$SRC/dist/shopgraph.zip" shopgraph )
+rm -f "$SRC/dist/internick-ai-product-schema.zip"
+( cd "$STAGE" && zip -rq "$SRC/dist/internick-ai-product-schema.zip" internick-ai-product-schema )
 
-echo "Built dist/shopgraph.zip"
+echo "Built dist/internick-ai-product-schema.zip"
 echo "--- contents ---"
-( cd "$SRC/dist" && unzip -l shopgraph.zip )
+( cd "$SRC/dist" && unzip -l internick-ai-product-schema.zip )

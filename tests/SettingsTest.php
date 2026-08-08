@@ -2,13 +2,13 @@
 /**
  * Settings option accessor + feature toggles.
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
-use ShopGraph\Compat\SeoPlugins;
-use ShopGraph\Schema\ProductSchema;
-use ShopGraph\Schema\SchemaOutput;
-use ShopGraph\Settings\Options;
+use Internick\AIProductSchema\Compat\SeoPlugins;
+use Internick\AIProductSchema\Schema\ProductSchema;
+use Internick\AIProductSchema\Schema\SchemaOutput;
+use Internick\AIProductSchema\Settings\Options;
 
 class SettingsTest extends WP_UnitTestCase {
 
@@ -17,7 +17,7 @@ class SettingsTest extends WP_UnitTestCase {
 	}
 
 	public function test_get_returns_stored_value(): void {
-		update_option( 'shopgraph_settings', array( 'enable_schema' => false ) );
+		update_option( 'internick_aips_settings', array( 'enable_schema' => false ) );
 		$this->assertFalse( Options::get( 'enable_schema', true ) );
 	}
 
@@ -34,12 +34,12 @@ class SettingsTest extends WP_UnitTestCase {
 	}
 
 	public function test_standalone_mode_forces_standalone(): void {
-		update_option( 'shopgraph_settings', array( 'schema_mode' => 'standalone' ) );
+		update_option( 'internick_aips_settings', array( 'schema_mode' => 'standalone' ) );
 		$this->assertTrue( $this->make_output()->should_output_standalone() );
 	}
 
 	public function test_disabling_schema_overrides_standalone_mode(): void {
-		update_option( 'shopgraph_settings', array( 'schema_mode' => 'standalone', 'enable_schema' => 'no' ) );
+		update_option( 'internick_aips_settings', array( 'schema_mode' => 'standalone', 'enable_schema' => 'no' ) );
 		$this->assertFalse( $this->make_output()->should_output_standalone() );
 	}
 }

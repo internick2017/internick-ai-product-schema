@@ -1,5 +1,5 @@
 /**
- * ShopGraph AI Attributes: repeatable Product Q&A rows (add / remove).
+ * AI Product Schema AI Attributes: repeatable Product Q&A rows (add / remove).
  *
  * Uses event delegation on the panel so rows added after page load are handled
  * too. No dependencies.
@@ -8,34 +8,34 @@
 	'use strict';
 
 	function init() {
-		var panel = document.getElementById( 'shopgraph_product_data' );
+		var panel = document.getElementById( 'internick_aips_product_data' );
 		if ( ! panel ) {
 			return;
 		}
 
-		var rows = panel.querySelector( '.shopgraph-qa-rows' );
+		var rows = panel.querySelector( '.internick-aips-qa-rows' );
 		if ( ! rows ) {
 			return;
 		}
 
 		panel.addEventListener( 'click', function ( event ) {
-			var addButton = event.target.closest( '.shopgraph-add-qa' );
+			var addButton = event.target.closest( '.internick-aips-add-qa' );
 			if ( addButton ) {
 				event.preventDefault();
 				addRow( rows );
 				return;
 			}
 
-			var removeButton = event.target.closest( '.shopgraph-remove-qa' );
+			var removeButton = event.target.closest( '.internick-aips-remove-qa' );
 			if ( removeButton ) {
 				event.preventDefault();
-				removeRow( rows, removeButton.closest( '.shopgraph-qa-row' ) );
+				removeRow( rows, removeButton.closest( '.internick-aips-qa-row' ) );
 			}
 		} );
 	}
 
 	function addRow( rows ) {
-		var template = rows.querySelector( '.shopgraph-qa-row' );
+		var template = rows.querySelector( '.internick-aips-qa-row' );
 		if ( ! template ) {
 			return;
 		}
@@ -58,7 +58,7 @@
 			return;
 		}
 
-		var allRows = rows.querySelectorAll( '.shopgraph-qa-row' );
+		var allRows = rows.querySelectorAll( '.internick-aips-qa-row' );
 		if ( allRows.length > 1 ) {
 			row.parentNode.removeChild( row );
 			return;

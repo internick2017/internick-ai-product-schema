@@ -10,12 +10,12 @@
  *                     inverse `isAccessoryOrSparePartFor` would wrongly claim
  *                     THIS product is an accessory of the others)
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
-namespace ShopGraph\Schema;
+namespace Internick\AIProductSchema\Schema;
 
-use ShopGraph\ProductFields\Fields;
+use Internick\AIProductSchema\ProductFields\Fields;
 
 defined( 'ABSPATH' ) || exit;
 

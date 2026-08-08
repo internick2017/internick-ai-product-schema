@@ -7,16 +7,16 @@
  *   their graph's Product node (if any) is enhanced too. Nothing is ever
  *   appended, so there is never a duplicate Product node.
  * - Standalone mode (forced via settings): suppress WC's node AND strip any
- *   Product piece from the SEO plugin's graph, then print ShopGraph's own
+ *   Product piece from the SEO plugin's graph, then print AI Product Schema's own
  *   complete node on wp_footer.
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
-namespace ShopGraph\Schema;
+namespace Internick\AIProductSchema\Schema;
 
-use ShopGraph\Compat\SeoPlugins;
-use ShopGraph\Settings\Options;
+use Internick\AIProductSchema\Compat\SeoPlugins;
+use Internick\AIProductSchema\Settings\Options;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -44,7 +44,7 @@ class SchemaOutput {
 		if ( $this->should_output_standalone() ) {
 			// Forced standalone: suppress WooCommerce's own Product schema, strip
 			// any Product piece from an active SEO plugin's graph, and print
-			// ShopGraph's complete node instead (no duplicate Product).
+			// AI Product Schema's complete node instead (no duplicate Product).
 			add_filter( 'woocommerce_structured_data_product', '__return_empty_array', 99 );
 			add_filter( 'wpseo_schema_graph', array( $this, 'filter_strip_products' ), 30, 2 );
 			add_filter( 'rank_math/json_ld', array( $this, 'filter_strip_products' ), 99, 2 );
@@ -67,9 +67,9 @@ class SchemaOutput {
 	}
 
 	/**
-	 * Whether ShopGraph should print its own standalone Product node.
+	 * Whether AI Product Schema should print its own standalone Product node.
 	 *
-	 * Only in forced "standalone" mode. In auto mode ShopGraph enhances the
+	 * Only in forced "standalone" mode. In auto mode AI Product Schema enhances the
 	 * existing Product node (WooCommerce Core, Yoast, or Rank Math) instead of
 	 * printing a second one.
 	 *
@@ -112,7 +112,7 @@ class SchemaOutput {
 
 	/**
 	 * Standalone-mode filter for SEO plugin graphs: remove their Product pieces
-	 * so ShopGraph's standalone node is the only Product on the page.
+	 * so AI Product Schema's standalone node is the only Product on the page.
 	 *
 	 * @param mixed $graph  Schema graph (array of pieces).
 	 * @param mixed $unused Filter's second arg (Yoast context / Rank Math JsonLD).

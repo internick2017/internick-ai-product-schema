@@ -2,10 +2,10 @@
 /**
  * Plugin bootstrap / service wiring.
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
-namespace ShopGraph;
+namespace Internick\AIProductSchema;
 
 defined( 'ABSPATH' ) || exit;
 

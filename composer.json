@@ -1,5 +1,5 @@
 {
-    "name": "internick2017/shopgraph",
+    "name": "internick2017/internick-ai-product-schema",
     "description": "Make WooCommerce products discoverable and purchasable by AI shopping agents.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
@@ -13,7 +13,7 @@
     },
     "autoload": {
         "psr-4": {
-            "ShopGraph\\": "src/"
+            "Internick\\AIProductSchema\\": "src/"
         }
     },
     "config": {

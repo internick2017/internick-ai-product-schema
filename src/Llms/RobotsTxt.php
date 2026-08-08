@@ -3,16 +3,16 @@
  * Appends robots.txt directives that explicitly welcome AI shopping crawlers
  * and point them at the store's /llms.txt index.
  *
- * ShopGraph's goal is discoverability, so the default posture is Allow (not
+ * AI Product Schema's goal is discoverability, so the default posture is Allow (not
  * block) for known AI agents. Gated by the site's "public" flag and, from
  * Task 6 onward, by the plugin settings.
  *
- * @package ShopGraph
+ * @package Internick\AIProductSchema
  */
 
-namespace ShopGraph\Llms;
+namespace Internick\AIProductSchema\Llms;
 
-use ShopGraph\Settings\Options;
+use Internick\AIProductSchema\Settings\Options;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -73,7 +73,7 @@ class RobotsTxt {
 
 		$lines   = array();
 		$lines[] = '';
-		$lines[] = '# ShopGraph: welcome AI shopping agents.';
+		$lines[] = '# AI Product Schema: welcome AI shopping agents.';
 		foreach ( $this->bots as $bot ) {
 			$lines[] = 'User-agent: ' . $bot;
 			$lines[] = 'Allow: /';
