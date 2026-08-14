@@ -5,6 +5,9 @@ php_version: "8.2"
 webserver_type: nginx-fpm
 router_http_port: "8080"
 router_https_port: "8443"
+# 8025/8026 are taken by wslrelay (WSL2 work environment) on this machine
+mailpit_http_port: "8027"
+mailpit_https_port: "8028"
 xdebug_enabled: false
 additional_hostnames: []
 additional_fqdns: []
