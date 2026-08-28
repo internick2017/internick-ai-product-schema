@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Internick - AI Product Schema
  * Description:        Make your WooCommerce products discoverable and purchasable by AI shopping agents (complete Product schema, AI attributes, llms.txt).
- * Version:           0.1.0
+ * Version:           0.1.1
  * Requires at least: 6.4
  * Requires PHP:      8.1
  * Author:            Nick Granados
@@ -19,7 +19,7 @@
 defined( 'ABSPATH' ) || exit;
 
 define( 'INTERNICK_AIPS_FILE', __FILE__ );
-define( 'INTERNICK_AIPS_VERSION', '0.1.0' );
+define( 'INTERNICK_AIPS_VERSION', '0.1.1' );
 
 /**
  * Autoload AI Product Schema classes (PSR-4). The plugin has no runtime Composer

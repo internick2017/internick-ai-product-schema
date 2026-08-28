@@ -1,10 +1,11 @@
 === Internick - AI Product Schema ===
 Contributors: internick2017
+Donate link: https://ko-fi.com/nickgranados
 Tags: woocommerce, structured data, schema, json-ld, ai
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,10 +65,16 @@ A simple Markdown convention (https://llmstxt.org/) that gives AI agents a conci
 
 == Changelog ==
 
+= 0.1.1 =
+* Banner updated to the current plugin name and missing directory assets added. Donate link added. No functional changes.
+
 = 0.1.0 =
 * Initial release: Product JSON-LD with Yoast/Rank Math coexistence, AI product attributes (Q&A, accessories, substitutes), `/llms.txt`, AI-crawler `robots.txt` directives, and a settings tab.
 
 == Upgrade Notice ==
+
+= 0.1.1 =
+Directory assets and metadata only. Nothing to do on your side.
 
 = 0.1.0 =
 Initial release.
