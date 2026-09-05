@@ -1,3 +1,13 @@
+> [!WARNING]
+> **This repository is archived and no longer maintained.** It is frozen at version 0.1.1.
+>
+> Development moved to **https://github.com/internick2017/ai-product-schema**, which is the
+> current source of the plugin. The published plugin is at
+> **https://wordpress.org/plugins/internick-ai-product-schema/**.
+>
+> This repository is kept for the history of the project's early stage, when it was called
+> ShopGraph. Do not use this code: it is two releases behind.
+
 # Internick - AI Product Schema
 
 Make WooCommerce products discoverable and purchasable by AI shopping agents: complete Product JSON-LD, AI product attributes, and an `llms.txt` catalog index.
